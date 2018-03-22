@@ -1,0 +1,18 @@
+SELECT title, rating, length
+FROM film
+WHERE length > 100;
+
+SELECT title, `length` FROM film
+WHERE `length` BETWEEN 100 AND 120;
+
+SELECT DISTINCT country, city
+FROM address, city, country
+WHERE address.city_id = city.city_id
+AND city.country_id = country.country_id;
+
+SELECT title, film_category.category_id, category.category_id
+ FROM film, film_category, category
+WHERE film.film_id = film_category.film_id 
+  AND film_category.category_id = category.category_id
+
+
