@@ -12,9 +12,9 @@ WHERE NOT EXISTS(SELECT * FROM actor a2, film_actor fa WHERE a2.actor_id = fa.ac
 SELECT DISTINCT r1.customer_id 
 FROM rental r1 
 WHERE NOT EXISTS(SELECT *
-			FROM rental r2
-				WHERE r1.customer_id = r2.customer_id
-					AND r1.rental_id <> r2.rental_id)
+FROM rental r2
+WHERE r1.customer_id = r2.customer_id
+AND r1.rental_id <> r2.rental_id)
 
 
 
@@ -22,28 +22,45 @@ WHERE NOT EXISTS(SELECT *
 SELECT DISTINCT r1.customer_id 
 FROM rental r1 
 WHERE EXISTS(SELECT *
-			FROM rental r2
-				WHERE r1.customer_id = r2.customer_id
-					AND r1.rental_id <> r2.rental_id)
+FROM rental r2
+WHERE r1.customer_id = r2.customer_id
+AND r1.rental_id <> r2.rental_id)
+
 
 #5
-SELECT first_name, last_name FROM actor, film_actor, film
-WHERE actor.actor_id = film_actor.actor_id AND film_actor.film_id = film.film_id AND film.title	IN("BETRAYED REAR", "CATCH AMISTAD" ) 
+SELECT first_name, last_name 
+FROM actor, film_actor, film
+WHERE actor.actor_id = film_actor.actor_id 
+AND film_actor.film_id = film.film_id 
+AND film.title IN("BETRAYED REAR", "CATCH AMISTAD" ) 
+
 
 #6
-SELECT a.first_name, a.last_name FROM actor a
-WHERE a.actor_id IN(SELECT a.actor_id FROM film_actor fa, film f WHERE a.actor_id = fa.actor_id
-AND fa.film_id = f.film_id AND f.title= "BETRAYED REAR")	
+SELECT first_name, last_name FROM actor, film_actor, film
+WHERE actor.actor_id = film_actor.actor_id 
+AND film_actor.film_id = film.film_id 
+AND film.title IN("BETRAYED REAR")
+AND actor.actor_id = film_actor.actor_id 
+AND film_actor.film_id = film.film_id AND film.title NOT IN("CATCH AMISTAD")
+
 
 #7
 
-SELECT first_name, last_name FROM actor, film, film_actor
-WHERE actor.actor_id = film_actor.actor_id AND film_actor.film_id = film.film_id AND film.title = "BETRAYED REAR"
-AND actor.actor_id = film_actor.actor_id AND film_actor.film_id = film.film_id AND film.title = "CATCH AMISTAD"
+SELECT first_name, last_name FROM actor a1
+WHERE actor_id IN (SELECT actor_id FROM film_actor fa, film f
+					WHERE fa.film_id = f.film_id
+					AND f.title = "BETRAYED REAR")
+AND actor_id IN (SELECT actor_id FROM film_actor fa, film f
+					WHERE fa.film_id = f.film_id
+					AND f.title = "CATCH AMISTAD")
 
 
 #8
 
-SELECT DISTINCT first_name, last_name FROM actor, film_actor, film
-WHERE actor.actor_id = film_actor.actor_id AND film_actor.film_id = film.film_id AND film.title NOT IN("BETRAYED REAR", "CATCH AMISTAD" )
+SELECT DISTINCT first_name, last_name 
+FROM actor, film_actor, film
+WHERE actor.actor_id = film_actor.actor_id 
+AND film_actor.film_id = film.film_id 
+AND film.title NOT IN("BETRAYED REAR", "CATCH AMISTAD" )
+
 
