@@ -1,0 +1,49 @@
+#1         
+SELECT first_name,last_name 
+FROM actor a1 
+WHERE EXISTS (SELECT * FROM actor a2 WHERE a1.last_name = a2.last_name AND a1.actor_id <> a2.actor_id)
+ORDER BY last_name;
+
+#2
+SELECT first_name, last_name FROM actor a1
+WHERE NOT EXISTS(SELECT * FROM actor a2, film_actor fa WHERE a2.actor_id = fa.actor_id)
+
+#3
+SELECT DISTINCT r1.customer_id 
+FROM rental r1 
+WHERE NOT EXISTS(SELECT *
+			FROM rental r2
+				WHERE r1.customer_id = r2.customer_id
+					AND r1.rental_id <> r2.rental_id)
+
+
+
+#4
+SELECT DISTINCT r1.customer_id 
+FROM rental r1 
+WHERE EXISTS(SELECT *
+			FROM rental r2
+				WHERE r1.customer_id = r2.customer_id
+					AND r1.rental_id <> r2.rental_id)
+
+#5
+SELECT first_name, last_name FROM actor, film_actor, film
+WHERE actor.actor_id = film_actor.actor_id AND film_actor.film_id = film.film_id AND film.title	IN("BETRAYED REAR", "CATCH AMISTAD" ) 
+
+#6
+SELECT a.first_name, a.last_name FROM actor a
+WHERE a.actor_id IN(SELECT a.actor_id FROM film_actor fa, film f WHERE a.actor_id = fa.actor_id
+AND fa.film_id = f.film_id AND f.title= "BETRAYED REAR")	
+
+#7
+
+SELECT first_name, last_name FROM actor, film, film_actor
+WHERE actor.actor_id = film_actor.actor_id AND film_actor.film_id = film.film_id AND film.title = "BETRAYED REAR"
+AND actor.actor_id = film_actor.actor_id AND film_actor.film_id = film.film_id AND film.title = "CATCH AMISTAD"
+
+
+#8
+
+SELECT DISTINCT first_name, last_name FROM actor, film_actor, film
+WHERE actor.actor_id = film_actor.actor_id AND film_actor.film_id = film.film_id AND film.title NOT IN("BETRAYED REAR", "CATCH AMISTAD" )
+
