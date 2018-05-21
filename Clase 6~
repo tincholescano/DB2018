@@ -47,7 +47,7 @@ AND film_actor.film_id = film.film_id AND film.title NOT IN("CATCH AMISTAD")
 #7
 
 SELECT first_name, last_name FROM actor a1
-WHERE actor_id IN (SELECT act	or_id FROM film_actor fa, film f
+WHERE actor_id IN (SELECT actor_id FROM film_actor fa, film f
 					WHERE fa.film_id = f.film_id
 					AND f.title = "BETRAYED REAR")
 AND actor_id IN (SELECT actor_id FROM film_actor fa, film f
