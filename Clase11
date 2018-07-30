@@ -63,7 +63,7 @@ FROM store
 	INNER JOIN country USING(country_id)
 	INNER JOIN staff ON store.manager_staff_id = staff.staff_id
 	INNER JOIN payment ON staff.staff_id = payment.staff_id
-GROUP BY store.store_id;
+GROUP BY store.store_id;b
 
 
 

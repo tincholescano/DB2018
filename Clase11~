@@ -56,16 +56,14 @@ WHERE rental.return_date IS NOT NULL
 ORDER BY inventory.store_id, customer.last_name;
 
 #7
-SELECT DISTINCT city.city, country.country, CONCAT(staff.first_name, '' ,staff.last_name) AS manager, 
-	(SELECT SUM(amount)
-	FROM payment
-	WHERE staff.staff_id = payment.staff_id) AS plata
+SELECT DISTINCT city.city, country.country, CONCAT(staff.first_name, '' ,staff.last_name) AS manager, SUM(amount)
 FROM store
-INNER JOIN address USING(address_id)
-INNER JOIN city USING(city_id)
-INNER JOIN country USING(country_id)
-INNER JOIN staff ON store.store_id = staff.store_id
-INNER JOIN payment ON staff.staff_id = payment.staff_id;
+	INNER JOIN address USING(address_id)
+	INNER JOIN city USING(city_id)
+	INNER JOIN country USING(country_id)
+	INNER JOIN staff ON store.manager_staff_id = staff.staff_id
+	INNER JOIN payment ON staff.staff_id = payment.staff_id
+GROUP BY store.store_id;
 
 
 

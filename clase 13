@@ -1,0 +1,47 @@
+#1
+ INSERT INTO customer
+ (first_name, last_name, store_id, address_id)
+ VALUES
+ ('Alan', 'Brito', 1, (SELECT address_id FROM address
+ INNER JOIN city USING(city_id)
+ INNER JOIN country USING(country_id)
+ WHERE country.country = 'United States'
+ ORDER BY 1 DESC
+ LIMIT 1))
+ 
+ #2
+ INSERT INTO rental
+(rental_date, inventory_id, customer_id, staff_id)
+VALUES(CURRENT_TIMESTAMP, (SELECT inventory_id FROM inventory INNER JOIN film USING(film_id)
+ WHERE film.title = "AFRICAN EGG")
+ ,599 ,(SELECT staff.staff_id FROM staff INNER JOIN store USING(store_id)
+ WHERE store.store_id = 2));
+ 
+ #3
+UPDATE film SET release_year = '1920' WHERE rating = "G"
+UPDATE film SET release_year = '1921' WHERE rating = "PG"
+UPDATE film SET release_year = '1922' WHERE rating = "R"
+UPDATE film SET release_year = '1923' WHERE rating = "PG-13"
+UPDATE film SET release_year = '1924' WHERE rating = "NC-17"
+
+#4
+UPDATE rental SET rental_date = CURRENT_DATE WHERE rental_id = "16.050"
+ 
+#5
+DELETE FROM film
+WHERE title = "AFRICAN EGG";
+#cannot delete or update a parent row: a foreign key contains fails
+
+DELETE payment 
+FROM rental 
+	INNER JOIN payment USING (rental_id)
+	INNER JOIN inventory USING (inventory_id)
+	WHERE film_id = 1;
+DELETE rental
+FROM inventory
+	INNER JOIN rental USING (inventory_id)
+	WHERE film_id = 1;
+DELETE film_actor FROM film_actor WHERE film_id = 1;
+DELETE film_category FROM film_category WHERE film_id = 1;
+DELETE FROM inventory WHERE inventory.film_id = 1;
+DELETE film FROM film WHERE film_id = 1;
