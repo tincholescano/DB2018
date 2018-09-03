@@ -1,0 +1,16 @@
+#1
+CREATE USER data_analyst@'%' IDENTIFIED BY 'root'
+
+#2
+GRANT SELECT, UPDATE, DELETE ON sakila.* TO 'data_analyst'@'%';
+
+#3
+CREATE TABLE prueba(ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, NAME VARCHAR(20) NULL)	
+
+CREATE command denied to user 'data_analyst'@'localhost' for table 'prueba'
+
+#4
+UPDATE film SET title = "Nelson" WHERE film_id=12;
+
+#5
+REVOKE UPDATE ON sakila.* FROM data_analyst;
