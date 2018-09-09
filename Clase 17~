@@ -1,0 +1,61 @@
+#1
+
+SELECT address.address_id, address.address, address.district, address.postal_code, city.city, country.country
+FROM address
+INNER JOIN city USING(city_id)
+INNER JOIN country USING(country_id)
+WHERE address.postal_code > 3000
+ORDER BY 2 DESC; #580 row(s) fetched - 84ms
+
+SELECT address.address_id, address.postal_code, address.address 
+FROM address
+WHERE address.postal_code BETWEEN 1000 AND 2000
+ORDER BY 2 DESC; #7 row(s) fetched - 6ms
+
+CREATE INDEX postalcode ON address(postal_code DESC)
+
+#index
+SELECT address.address_id, address.address, address.district, address.postal_code, city.city, country.country
+FROM address
+INNER JOIN city USING(city_id)
+INNER JOIN country USING(country_id)
+WHERE address.postal_code > 3000
+ORDER BY 2 DESC; #580 row(s) fetched - 21ms
+
+SELECT address.address_id, address.postal_code, address.address 
+FROM address
+WHERE address.postal_code BETWEEN 1000 AND 2000
+ORDER BY 2 DESC; #7 row(s) fetched - 5ms
+
+#2
+
+SELECT a.first_name AS 'Nombre', a.last_name AS 'Apellido' 
+	FROM actor a
+	WHERE a.first_name LIKE a.last_name
+	ORDER BY 1 DESC;
+
+	SELECT a.first_name AS 'Nombre', a.last_name AS 'Apellido' 
+	FROM actor a
+	WHERE LENGTH(a.first_name) > 8 
+	AND LENGTH (a.last_name) < 5
+	ORDER BY 1 DESC; 
+
+	SELECT a.first_name AS 'Nombre', a.last_name AS 'Apellido' 
+	FROM actor a
+	WHERE LENGTH(a.first_name) > LENGTH (a.last_name)
+ORDER BY 1 DESC; 
+
+#3
+
+SELECT film.description 
+FROM film
+WHERE film.description LIKE '%Database%';
+#76 row(s) fetched - 11ms
+
+CREATE FULLTEXT INDEX description
+ON film(description DESC)
+
+SELECT description
+FROM film
+WHERE MATCH(description) AGAINST('Database');
+#76 row(s) fetched - 5ms
