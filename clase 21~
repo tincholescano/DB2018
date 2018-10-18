@@ -1,0 +1,153 @@
+#1
+
+docker pull redis
+
+docker run --name redis -v /home/feli/redis/data -p 6379:6379 -d redis
+
+docker run -it --link redis:redis --rm redis redis-cli -h redis -p 6379
+
+#2
+
+* Ping "hello world"
+
+* config get *max-*-entries*
+
+#3
+
+* SET strkey "stringkey"
+
+* GET strkey
+
+* strlen strkey
+
+* APPEND strkey "asd"
+
+#4
+
+* hset hkey field1 "hashkey"
+
+* hget hkey field1
+
+* hlen hkey
+
+* hvals hkey
+
+#5
+
+* lpush lkey "elemento1"
+
+* lpush lkey "elemento2"	
+
+* lpush lkey "elemento3"
+
+* lpush lkey "elemento4"
+
+* lrange lkey 0 3
+
+* lpop lkey
+
+#6
+
+* SADD dbms mysql
+
+* SADD dbms oracle
+
+* SADD dbms sql
+
+* SADD dbms sql
+  (integer) 0
+  already exists
+
+* SMEMBERS dbms
+    1) "mysql"
+    2) "oracle"
+    3) "sql"
+
+#7
+* ZADD sskey 2 mysql
+
+* ZADD sskey 4 mongodb
+
+* ZADD sskey 1 redis
+
+* ZADD sskey 3 oracle
+
+* ZRANGE sskey 0 10 
+1) "redis"
+2) "mysql"
+3) "oracle"
+4) "mongodb"
+
+* ZREMRANGEBYRANK sskey 0 2
+
+#8
+
+* Open 2 terminals
+
+* on the first terminal write the next commands: 
+    -PSUBSCRIBE redisChat #to subscribe to a channel
+    -SUBSCRIBE redisChat #to read the messages
+
+* on the second one write the next commands:
+    -PUBLISH redisChat "test message" #to send a message
+
+
+#9
+
+* MULTI
+
+* SET strkey "stringkey"
+
+* GET strkey
+
+* strlen strkey
+
+* APPEND strkey " lol"
+
+* EXEC
+
+#10
+
+The REDIS backup function is used to create backup of the database
+
+in order to create a backup you need to run the following command:
+
+"127.0.0.1:6379> SAVE"
+
+This command will create a dump.rdb file in your Redis directory.
+
+
+
+To restore Redis data, move Redis backup file (dump.rdb) into your 
+Redis directory and start the server. To get your Redis directory,
+use CONFIG command of Redis as shown below.
+
+127.0.0.1:6379> CONFIG get dir  
+1) "dir" 
+2) "/user/tutorialspoint/redis-2.8.13/src"
+
+
+To create Redis backup, an alternate command BGSAVE is also available. 
+This command will start the backup process and run this in the background.
+
+127.0.0.1:6379> BGSAVE  
+Background saving started
+
+#11
+
+Redis benchmark is the utility to check the performance of Redis by running n commands simultaneously.
+
+redis-benchmark [option] [option value] 
+
+redis-benchmark -n 100000
+
+#12
+
+pip install redis
+
+import redis
+
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+r.set('hola', 'chau')
+r.get('hola')
